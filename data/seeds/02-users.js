@@ -9,5 +9,6 @@ exports.seed = function(knex, Promise) {
     { name: 'Legolas' }, // 7
     { name: 'Gimli' }, // 8
     { name: 'Aragorn' }, // 9
+    { name: 'Kevin' } // 10
   ]);
 };

@@ -1,11 +1,11 @@
 const express = require("express")
 const helmet = require("helmet")
-const morgan = require("morgan")
+const logger = require("./middleware/logger")
 
 const server = express()
 
 server.use(helmet())
-server.use(morgan("short"))
+server.use(logger())
 server.use(express.json())
 
 
