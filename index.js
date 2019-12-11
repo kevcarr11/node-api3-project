@@ -1,13 +1,17 @@
 const express = require("express")
 const helmet = require("helmet")
 const logger = require("./middleware/logger")
+const userRouter = require("./users/userRouter")
 
 const server = express()
 
 server.use(helmet())
 server.use(logger())
+
+
 server.use(express.json())
 
+server.use("/api/users", userRouter)
 
 
 server.use((req, res) => {
