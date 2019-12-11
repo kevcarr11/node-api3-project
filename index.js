@@ -16,6 +16,13 @@ server.use((req, res) => {
   })
 })
 
+server.use((err, req, res, next) => {
+  console.log(err)
+  res.status(500).json({
+    message: "An internal error occurred"
+  })
+})
+
 server.listen(8080, () => {
   console.log("Server Running on http://localhost:8080")
 })
