@@ -1,7 +1,10 @@
 const express = require('express');
 const user = require('../users/userDb.js')
+const postRouter = require("../posts/postRouter")
 
 const router = express.Router()
+
+router.use("/:id/posts", postRouter)
 
 
 router.post('/', validateUser(), (req, res) => {
@@ -14,7 +17,7 @@ router.post('/', validateUser(), (req, res) => {
     })
 });
 
-router.post('/:id/posts', validatePost(), validateUserId(), (req, res) => {
+router.post('/:id/posts', validateUserId(), validatePost(), (req, res) => {
   user.insert(req.body)
     .then(post => {
       res.status(201).json(post)
@@ -28,7 +31,7 @@ router.post('/:id/posts', validatePost(), validateUserId(), (req, res) => {
 router.get('/', (req, res) => {
   user.get()
     .then(users => {
-      res.status(200).json(users)
+      res.json(users)
     })
     .catch(err => {
       next(err)
@@ -53,7 +56,7 @@ router.get('/:id/posts', validateUserId(), (req, res) => {
 router.delete('/:id', validateUserId(), (req, res) => {
   user.remove(req.user.id)
     .then(() => {
-      res.status(200).json(user)
+      res.json({ message: "User was successfully deleted" })
     })
     .catch(err => {
       next(err)
@@ -62,9 +65,16 @@ router.delete('/:id', validateUserId(), (req, res) => {
 
 router.put('/:id', validateUser(), validateUserId(), (req, res) => {
   user.update(req.user.id, req.body)
-    .then(user => {
-      res.status(200).json(user)
+    .then(count => {
+      if (count === 1) {
+        return user.getById(req.user.id)
+      } else {
+        res.status(500).json({ error: "The post information could not be modified." })
+      }
     })
+      .then(user => {
+        res.json(user)
+      })
     .catch(err => {
       next(err)
     })
