@@ -4,6 +4,8 @@ const logger = require("./middleware/logger")
 const userRouter = require("./users/userRouter")
 
 const server = express()
+const host = process.env.HOST || "0.0.0.0"
+const port = process.env.PORT || 8080
 
 server.use(helmet())
 server.use(logger())
@@ -27,6 +29,7 @@ server.use((err, req, res, next) => {
   })
 })
 
-server.listen(8080, () => {
-  console.log("Server Running on http://localhost:8080")
+
+server.listen(port, () => {
+  console.log(`Server Running on http://${host}:${port}`)
 })
