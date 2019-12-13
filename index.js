@@ -15,6 +15,14 @@ server.use(express.json())
 
 server.use("/api/users", userRouter)
 
+server.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to the base url in our API",
+    cohort: process.env.LAMBDA_COHORT,
+    api_key: process.env.SECRET_API_KEY
+  })
+})
+
 
 server.use((req, res) => {
   res.status(404).json({
@@ -30,6 +38,6 @@ server.use((err, req, res, next) => {
 })
 
 
-server.listen(port, () => {
+server.listen(port, host, () => {
   console.log(`Server Running on http://${host}:${port}`)
 })
