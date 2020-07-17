@@ -1,43 +1,21 @@
 const express = require("express")
-const helmet = require("helmet")
-const logger = require("./middleware/logger")
-const userRouter = require("./users/userRouter")
-
-const server = express()
+const app = express()
 const host = process.env.HOST || "0.0.0.0"
-const port = process.env.PORT || 8080
+const port = process.env.POST || 8080
 
-server.use(helmet())
-server.use(logger())
-
-
-server.use(express.json())
-
-server.use("/api/users", userRouter)
-
-server.get("/", (req, res) => {
-  res.json({
-    message: "Welcome to the base url in our API",
-    cohort: process.env.LAMBDA_COHORT,
-    api_key: process.env.SECRET_API_KEY
-  })
+const cors_proxy = require('cors-anywhere')
+cors_proxy.createServer({
+    originWhitelist: [],
+    requireHeader: ['origin', 'x-requested-with'],
+    removeHeaders: ['cookie', 'cookie2']
 })
 
-
-server.use((req, res) => {
-  res.status(404).json({
-    message: "Page Not Found",
-  })
+app.get("/", (req, res) => {
+	res.json({
+		message: "Welcome to our API",
+	})
 })
 
-server.use((err, req, res, next) => {
-  console.log(err)
-  res.status(500).json({
-    message: "An internal error occurred"
-  })
-})
-
-
-server.listen(port, host, () => {
-  console.log(`Server Running on http://${host}:${port}`)
+app.listen(port, host, () => {
+	console.log(`Running CORS Anywhere on http://${host}:${port}`)
 })
