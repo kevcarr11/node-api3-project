@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express()
 const host = process.env.HOST || "0.0.0.0"
-const port = process.env.POST || 8080
+const port = process.env.POST || 3300
 
 const cors_proxy = require('cors-anywhere')
 cors_proxy.createServer({
