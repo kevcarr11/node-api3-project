@@ -6,8 +6,6 @@ const port = process.env.POST || 3300
 const cors_proxy = require('cors-anywhere')
 cors_proxy.createServer({
     originWhitelist: [],
-    requireHeader: ['origin', 'x-requested-with'],
-    removeHeaders: ['cookie', 'cookie2']
 })
 
 app.get("/", (req, res) => {
